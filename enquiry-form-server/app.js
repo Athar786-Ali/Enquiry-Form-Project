@@ -19,10 +19,11 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://your-frontend-vercel-url.vercel.app"
+    "https://fronted-enquiry-form.vercel.app"
   ],
   credentials: true
 }));
+
 
 // allow frontend requests
 app.use(express.json());      // parse JSON body
