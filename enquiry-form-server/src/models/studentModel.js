@@ -23,3 +23,4 @@ const studentSchema = new mongoose.Schema({
 const studentModel = mongoose.model('Student', studentSchema);
 
 module.exports = studentModel;
+
