@@ -8,7 +8,7 @@ export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
 
   const loginUser = () => {
-    axios.post(`${API}/user/login`, form)
+    API.post("/user/login", form)
       .then(res => {
         if (res.data.status === 1) {
           localStorage.setItem("token", res.data.token);
