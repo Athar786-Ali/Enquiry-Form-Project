@@ -1,69 +1,48 @@
 import { useState } from "react";
 import API from "../api";
 import { toast } from "react-toastify";
+import { HiMail, HiLockClosed } from "react-icons/hi";
 
 export default function Login() {
-  const [form, setForm] = useState({
-    email: "",
-    password: ""
-  });
+  const [form, setForm] = useState({ email: "", password: "" });
 
-  const loginUser = () => {
-    API.post("/user/login", form)
-      .then((res) => {
-        if (res.data.status === 1) {
-          localStorage.setItem("token", res.data.token);
-          toast.success("Login successful");
-          window.location.href = "/dashboard";
-        } else {
-          toast.error(res.data.msg);
-        }
-      })
-      .catch(() => {
-        toast.error("Error");
-      });
+  const loginUser = async () => {
+    try {
+      const res = await API.post("/user/login", form);
+      if (res.data.status === 1) {
+        localStorage.setItem("token", res.data.token);
+        toast.success("Welcome Back!");
+        window.location.href = "/dashboard";
+      } else {
+        toast.error(res.data.msg);
+      }
+    } catch (err) { toast.error("Server Error"); }
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <div className="p-6 bg-white rounded shadow w-96">
+    <div className="h-screen flex items-center justify-center p-4">
+      <div className="glass-card w-full max-w-md p-10">
+        <div className="text-center mb-10">
+          <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 shadow-lg shadow-indigo-200">G</div>
+          <h2 className="text-3xl font-black text-slate-800">Welcome Back</h2>
+          <p className="text-slate-500 mt-2">Sign in to manage your refrigeration business</p>
+        </div>
 
-        <h2 className="text-xl font-bold mb-4 text-center">
-          Login
-        </h2>
+        <div className="space-y-5">
+          <div className="relative">
+            <HiMail className="absolute left-3 top-3.5 text-slate-400 text-xl" />
+            <input type="email" placeholder="Email Address" className="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all" onChange={(e) => setForm({ ...form, email: e.target.value })} />
+          </div>
+          <div className="relative">
+            <HiLockClosed className="absolute left-3 top-3.5 text-slate-400 text-xl" />
+            <input type="password" placeholder="Password" className="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all" onChange={(e) => setForm({ ...form, password: e.target.value })} />
+          </div>
+          <button onClick={loginUser} className="btn-primary w-full py-3.5 text-lg">Sign In</button>
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full mb-3 p-2 border rounded"
-          onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
-          }
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full mb-3 p-2 border rounded"
-          onChange={(e) =>
-            setForm({ ...form, password: e.target.value })
-          }
-        />
-
-        <button
-          className="w-full bg-blue-600 text-white py-2 rounded"
-          onClick={loginUser}
-        >
-          Login
-        </button>
-
-        <p className="mt-3 text-center">
-          No account?{" "}
-          <a href="/register" className="text-blue-600">
-            Register
-          </a>
+        <p className="mt-8 text-center text-slate-600">
+          New here? <a href="/register" className="text-indigo-600 font-bold hover:underline">Create an account</a>
         </p>
-
       </div>
     </div>
   );

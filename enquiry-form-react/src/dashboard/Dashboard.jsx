@@ -1,36 +1,43 @@
-export default function Dashboard() {
+import { HiUserGroup, HiClipboardList, HiLogout } from "react-icons/hi";
 
+export default function Dashboard() {
   const logout = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
   };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-
-        <button
-          onClick={logout}
-          className="bg-red-600 text-white px-4 py-2 rounded"
-        >
-          Logout
+    <div className="min-h-screen p-8 max-w-7xl mx-auto">
+      {/* Navbar */}
+      <nav className="flex justify-between items-center mb-12 glass-card p-4 px-8">
+        <div className="flex items-center gap-2">
+          <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">G</div>
+          <h1 className="text-2xl font-black text-slate-800 tracking-tight">GOLDEN <span className="text-indigo-600">REF.</span></h1>
+        </div>
+        <button onClick={logout} className="flex items-center gap-2 text-slate-600 hover:text-red-600 font-medium transition-colors">
+          <HiLogout className="text-xl" /> Logout
         </button>
-      </div>
+      </nav>
 
-      <div className="grid grid-cols-2 gap-6">
-        <a
-          href="/enquiries"
-          className="p-6 bg-blue-500 text-white rounded"
-        >
-          Enquiries
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Card 1 */}
+        <a href="/enquiries" className="glass-card p-8 group hover:border-indigo-500 transition-all duration-300">
+          <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 transition-colors">
+            <HiUserGroup className="text-3xl text-indigo-600 group-hover:text-white" />
+          </div>
+          <h3 className="text-2xl font-bold mb-2 text-slate-800">Enquiry Leads</h3>
+          <p className="text-slate-500">Manage customer queries, track service requests and grow your business.</p>
+          <div className="mt-6 inline-flex items-center text-indigo-600 font-semibold">Open Manager →</div>
         </a>
 
-        <a
-          href="/tasks"
-          className="p-6 bg-green-500 text-white rounded"
-        >
-          Task Manager
+        {/* Card 2 */}
+        <a href="/tasks" className="glass-card p-8 group hover:border-emerald-500 transition-all duration-300">
+          <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors">
+            <HiClipboardList className="text-3xl text-emerald-600 group-hover:text-white" />
+          </div>
+          <h3 className="text-2xl font-bold mb-2 text-slate-800">Task Manager</h3>
+          <p className="text-slate-500">Organize your daily workflow, set priorities, and never miss a deadline.</p>
+          <div className="mt-6 inline-flex items-center text-emerald-600 font-semibold">Open Tracker →</div>
         </a>
       </div>
     </div>
