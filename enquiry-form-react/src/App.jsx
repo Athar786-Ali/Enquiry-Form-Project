@@ -5,12 +5,16 @@ import Dashboard from "./dashboard/Dashboard";
 import TaskManager from "./dashboard/TaskManager";
 import Enquiry from "./Enquiry";
 import PrivateRoute from "./auth/PrivateRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function App() {
   return (
     <BrowserRouter>
+          <ToastContainer /> 
       <Routes>
-
+        
         {/* Public Pages */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
