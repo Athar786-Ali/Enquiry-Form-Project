@@ -7,7 +7,8 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen p-8 max-w-7xl mx-auto bg-slate-50">
+   <div className="min-h-screen p-8 max-w-7xl mx-auto ">
+
       {/* Navbar */}
       <nav className="flex justify-between items-center mb-12 bg-white rounded-2xl shadow-xl p-4 px-8">
         <div className="flex items-center gap-2">

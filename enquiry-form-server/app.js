@@ -19,10 +19,11 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://fronted-enquiry-form.vercel.app"
+    "https://fronted-enquiry-form-project.vercel.app" // ✅ correct
   ],
   credentials: true
 }));
+
 
 
 // allow frontend requests

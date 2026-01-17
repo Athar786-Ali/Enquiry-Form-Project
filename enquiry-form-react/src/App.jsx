@@ -13,7 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 export default function App() {
   return (
     // Is div mein background color force kiya hai
-    <div className="min-h-screen w-full bg-[#f8fafc] selection:bg-indigo-100">
+   <div className="min-h-screen w-full bg-[#f1f5f9] selection:bg-indigo-100">
+
       <BrowserRouter>
         <ToastContainer position="top-center" autoClose={3000} /> 
         <Routes>

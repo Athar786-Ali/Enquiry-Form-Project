@@ -32,7 +32,8 @@ export default function Register() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-slate-50 p-4">
+    <div className="h-screen flex items-center justify-center p-4 ">
+
       <div className="p-10 bg-white rounded-2xl shadow-xl w-full max-w-md">
 
         <div className="text-center mb-8">
