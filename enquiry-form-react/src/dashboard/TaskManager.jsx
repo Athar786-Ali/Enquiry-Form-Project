@@ -1,199 +1,161 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import API from "../api";
-import { Button, Label, TextInput, Textarea, Select, Badge, Card, Table, Modal } from "flowbite-react";
 import { toast } from "react-toastify";
-import { HiOutlineExclamationCircle, HiCheckCircle, HiClock, HiTrash, HiPencil } from "react-icons/hi";
+import { HiPlus, HiTrash, HiCheckCircle, HiCalendar, HiCollection } from "react-icons/hi";
 
 export default function TaskManager() {
   const [list, setList] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  
-  const [task, setTask] = useState({
-    title: "",
-    description: "",
-    priority: "Low",
-    dueDate: ""
-  });
+  const [task, setTask] = useState({ title: "", description: "", priority: "Low", dueDate: "" });
 
-  // 1. LOAD TASKS & STATS
   const loadTasks = async () => {
     try {
       const res = await API.get("/task/list");
-      setList(res.data.data);
-    } catch (error) {
-      toast.error("Failed to load tasks");
+      setList(res.data.data || []);
+    } catch (e) { 
+      console.error(e);
+      toast.error("Failed to connect to database"); 
     }
   };
 
   useEffect(() => { loadTasks(); }, []);
 
-  // 2. SAVE OR UPDATE TASK
-  const handleSubmit = async (e) => {
+  const addTask = async (e) => {
     e.preventDefault();
+    if(!task.title) return toast.warning("Title is required");
     try {
-      if (editingId) {
-        await API.put(`/task/update/${editingId}`, task);
-        toast.success("Task updated successfully");
-      } else {
-        await API.post("/task/add", task);
-        toast.success("Task added successfully");
-      }
+      await API.post("/task/add", task);
       setTask({ title: "", description: "", priority: "Low", dueDate: "" });
-      setEditingId(null);
-      setIsModalOpen(false);
       loadTasks();
-    } catch (error) {
-      toast.error("Operation failed");
-    }
+      toast.success("Task added successfully!");
+    } catch (err) { toast.error("Error adding task"); }
   };
 
-  // 3. DELETE TASK
-  const deleteTask = async (id) => {
-    if (window.confirm("Are you sure?")) {
-      await API.delete(`/task/delete/${id}`);
-      toast.info("Task deleted");
-      loadTasks();
-    }
-  };
-
-  // 4. TOGGLE STATUS (Complete/Pending)
-  const toggleStatus = async (item) => {
+  const toggleTask = async (item) => {
     const newStatus = item.status === "pending" ? "completed" : "pending";
     await API.put(`/task/update/${item._id}`, { status: newStatus });
     loadTasks();
   };
 
-  const handleEdit = (item) => {
-    setEditingId(item._id);
-    setTask({
-      title: item.title,
-      description: item.description,
-      priority: item.priority,
-      dueDate: item.dueDate ? item.dueDate.split('T')[0] : ""
-    });
-    setIsModalOpen(true);
+  const deleteTask = async (id) => {
+    if(window.confirm("Are you sure you want to delete this task?")) {
+      await API.delete(`/task/delete/${id}`);
+      loadTasks();
+      toast.info("Task deleted");
+    }
   };
 
-  // CALCULATE STATS
-  const completedCount = list.filter(t => t.status === "completed").length;
-  const pendingCount = list.length - completedCount;
-
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="max-w-6xl mx-auto">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto">
+      {/* Task Stats Card */}
+      <div className="flex gap-4 mb-8">
+         <div className="glass-card flex-1 p-6 text-center border-b-4 border-indigo-500">
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">Pending Tasks</p>
+            <h3 className="text-3xl font-black text-slate-800">{list.filter(t => t.status !== 'completed').length}</h3>
+         </div>
+         <div className="glass-card flex-1 p-6 text-center border-b-4 border-green-500">
+            <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">Completed Tasks</p>
+            <h3 className="text-3xl font-black text-slate-800">{list.filter(t => t.status === 'completed').length}</h3>
+         </div>
+      </div>
+
+      {/* Form Section */}
+      <div className="glass-card p-8 mb-10 border-t-4 border-indigo-500">
+        <h2 className="text-2xl font-black mb-8 text-slate-800 flex items-center gap-2">
+          <HiCollection className="text-indigo-600"/> Create New Task
+        </h2>
         
-        {/* HEADER & STATS */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-800">Task Center</h1>
-          <Button onClick={() => { setEditingId(null); setTask({title:"", description:"", priority:"Low", dueDate:""}); setIsModalOpen(true); }} className="bg-blue-700">
-            + New Task
-          </Button>
-        </div>
+        <form onSubmit={addTask} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-slate-700">Task Title</label>
+              <input 
+                className="input-style" 
+                placeholder="Enter task title..." 
+                value={task.title} 
+                onChange={e=>setTask({...task, title:e.target.value})} 
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-slate-700">Due Date</label>
+              <input 
+                type="date" 
+                className="input-style" 
+                value={task.dueDate} 
+                onChange={e=>setTask({...task, dueDate:e.target.value})} 
+              />
+            </div>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="bg-white border-l-4 border-blue-500">
-            <div className="flex items-center justify-between">
-              <h5 className="text-gray-500 font-medium">Total Tasks</h5>
-              <span className="text-2xl font-bold">{list.length}</span>
-            </div>
-          </Card>
-          <Card className="bg-white border-l-4 border-yellow-400">
-            <div className="flex items-center justify-between">
-              <h5 className="text-gray-500 font-medium">Pending</h5>
-              <span className="text-2xl font-bold text-yellow-600">{pendingCount}</span>
-            </div>
-          </Card>
-          <Card className="bg-white border-l-4 border-green-500">
-            <div className="flex items-center justify-between">
-              <h5 className="text-gray-500 font-medium">Completed</h5>
-              <span className="text-2xl font-bold text-green-600">{completedCount}</span>
-            </div>
-          </Card>
-        </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-bold text-slate-700">Description</label>
+            <textarea 
+              className="input-style h-24 resize-none" 
+              placeholder="Add task details here..." 
+              value={task.description} 
+              onChange={e=>setTask({...task, description:e.target.value})} 
+            />
+          </div>
 
-        {/* TASK TABLE */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
-          <Table hoverable>
-            <Table.Head className="bg-gray-100">
-              <Table.HeadCell>Status</Table.HeadCell>
-              <Table.HeadCell>Task Details</Table.HeadCell>
-              <Table.HeadCell>Priority</Table.HeadCell>
-              <Table.HeadCell>Due Date</Table.HeadCell>
-              <Table.HeadCell>Actions</Table.HeadCell>
-            </Table.Head>
-            <Table.Body className="divide-y">
-              {list.map((t) => (
-                <Table.Row key={t._id} className={t.status === 'completed' ? 'bg-gray-50 opacity-70' : ''}>
-                  <Table.Cell>
-                    <button onClick={() => toggleStatus(t)}>
-                      {t.status === 'completed' ? 
-                        <HiCheckCircle className="text-2xl text-green-500" /> : 
-                        <div className="w-6 h-6 border-2 border-gray-300 rounded-full" />
-                      }
-                    </button>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className={`font-bold text-gray-800 ${t.status === 'completed' ? 'line-through' : ''}`}>{t.title}</div>
-                    <div className="text-xs text-gray-500 truncate max-w-xs">{t.description}</div>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Badge color={t.priority === 'High' ? 'failure' : t.priority === 'Medium' ? 'warning' : 'info'}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-slate-700">Priority Level</label>
+              <select 
+                className="input-style" 
+                value={task.priority} 
+                onChange={e=>setTask({...task, priority:e.target.value})}
+              >
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+            </div>
+            <button 
+              type="submit" 
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-100 flex items-center justify-center gap-2 transition-all active:scale-95"
+            >
+              <HiPlus className="text-xl"/> Add Task
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Task List Section */}
+      <div className="space-y-4">
+        {list.length === 0 ? (
+          <div className="glass-card p-10 text-center">
+            <p className="text-slate-400 font-medium italic">No tasks found. Start by adding one above!</p>
+          </div>
+        ) : (
+          list.map(t => (
+            <div key={t._id} className={`glass-card p-5 flex items-center justify-between transition-all hover:border-indigo-200 ${t.status === 'completed' ? 'bg-slate-50/80 grayscale' : ''}`}>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => toggleTask(t)} 
+                  className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${t.status === 'completed' ? 'bg-green-500 border-green-500 text-white' : 'border-slate-300 hover:border-indigo-400'}`}
+                >
+                  {t.status === 'completed' && <HiCheckCircle className="text-xl"/>}
+                </button>
+                <div>
+                  <h4 className={`font-bold text-lg ${t.status === 'completed' ? 'line-through text-slate-400' : 'text-slate-800'}`}>{t.title}</h4>
+                  <div className="flex gap-4 mt-1">
+                    <p className="text-xs text-slate-500 flex items-center gap-1">
+                      <HiCalendar/> {t.dueDate ? t.dueDate.split('T')[0] : 'No deadline'}
+                    </p>
+                    <span className={`text-[10px] uppercase tracking-wider font-black px-2 py-0.5 rounded-md ${t.priority === 'High' ? 'bg-red-100 text-red-600' : t.priority === 'Medium' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'}`}>
                       {t.priority}
-                    </Badge>
-                  </Table.Cell>
-                  <Table.Cell className="text-sm">
-                    <div className="flex items-center gap-1 text-gray-600">
-                      <HiClock /> {t.dueDate ? new Date(t.dueDate).toLocaleDateString() : 'No date'}
-                    </div>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className="flex gap-3">
-                      <HiPencil className="text-lg text-blue-600 cursor-pointer" onClick={() => handleEdit(t)} />
-                      <HiTrash className="text-lg text-red-500 cursor-pointer" onClick={() => deleteTask(t._id)} />
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-          {list.length === 0 && <div className="p-10 text-center text-gray-500 font-medium">No tasks found. Create one to get started!</div>}
-        </div>
-
-        {/* CREATE/EDIT MODAL */}
-        <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <Modal.Header>{editingId ? "Edit Task" : "Create New Task"}</Modal.Header>
-          <Modal.Body>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="title" value="Task Title" />
-                <TextInput id="title" value={task.title} onChange={(e) => setTask({...task, title: e.target.value})} required />
-              </div>
-              <div>
-                <Label htmlFor="desc" value="Description" />
-                <Textarea id="desc" rows={3} value={task.description} onChange={(e) => setTask({...task, description: e.target.value})} />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label value="Priority" />
-                  <Select value={task.priority} onChange={(e) => setTask({...task, priority: e.target.value})}>
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                  </Select>
-                </div>
-                <div>
-                  <Label value="Due Date" />
-                  <TextInput type="date" value={task.dueDate} onChange={(e) => setTask({...task, dueDate: e.target.value})} />
+                    </span>
+                  </div>
                 </div>
               </div>
-              <Button type="submit" className="w-full mt-4 bg-blue-700">
-                {editingId ? "Update Task" : "Save Task"}
-              </Button>
-            </form>
-          </Modal.Body>
-        </Modal>
-
+              <button 
+                onClick={() => deleteTask(t._id)} 
+                className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+              >
+                <HiTrash className="text-xl"/>
+              </button>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

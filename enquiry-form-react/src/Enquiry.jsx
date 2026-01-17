@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import EnquiryList from "./enquiry/EnquiryList";
 import axios from "axios";
 import { toast } from 'react-toastify';
-import { HiUser, HiMail, HiPhone, HiChatAlt2, HiArrowLeft } from "react-icons/hi";
+import { HiUser, HiMail, HiPhone, HiChatAlt2, HiArrowLeft, HiSearch, HiSparkles } from "react-icons/hi";
 
 const API_BASE = "https://backend-enquiry-form-project.vercel.app/api/enquiry";
 
 export default function Enquiry() {
   const [enquiryList, setEnquiryList] = useState([]); 
-  const [enquiryId, setEnquiryId] = useState(''); 
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [enquiryId, setEnquiryId] = useState(''); 
 
   const getAllEnquiry = () => {
     axios.get(`${API_BASE}/view`).then((res) => {
@@ -21,73 +22,100 @@ export default function Enquiry() {
 
   const saveEnquiry = (e) => {
     e.preventDefault();
-    const apiCall = enquiryId ? axios.put(`${API_BASE}/update/${enquiryId}`, formData) : axios.post(`${API_BASE}/insert`, formData);
-    
-    apiCall.then((res) => {
+    const call = enquiryId ? axios.put(`${API_BASE}/update/${enquiryId}`, formData) : axios.post(`${API_BASE}/insert`, formData);
+    call.then((res) => {
       if (res.data.status === 1) {
         toast.success(res.data.msg);
         setFormData({ name: '', email: '', phone: '', message: '' });
         setEnquiryId('');
         getAllEnquiry();
       }
-    }).catch(() => toast.error("Something went wrong"));
+    }).catch(() => toast.error("Error saving data"));
   };
 
+  const filteredData = enquiryList.filter(item => 
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()) || item.phone.includes(searchTerm)
+  );
+
   return (
-    <div className="p-4 md:p-8 max-w-[1600px] mx-auto">
-      <div className="flex items-center gap-4 mb-8">
-        <a href="/dashboard" className="p-2 bg-white rounded-full shadow-sm hover:bg-slate-50"><HiArrowLeft className="text-xl"/></a>
-        <h1 className="text-3xl font-black text-slate-800">Enquiry <span className="text-indigo-600">Leads</span></h1>
+    <div className="p-4 md:p-10 max-w-[1600px] mx-auto">
+      {/* HEADER section */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+        <div className="flex items-center gap-5">
+          <a href="/dashboard" className="w-12 h-12 glass-card flex items-center justify-center hover:bg-white transition-all shadow-md group">
+            <HiArrowLeft className="text-xl text-slate-600 group-hover:text-indigo-600"/>
+          </a>
+          <div>
+            <h1 className="text-4xl font-black text-slate-800 tracking-tight flex items-center gap-2">
+              Leads <span className="text-indigo-600 italic">Management</span> <HiSparkles className="text-yellow-400 text-2xl"/>
+            </h1>
+          </div>
+        </div>
+
+        <div className="relative w-full md:w-96">
+          <HiSearch className="absolute left-4 top-4 text-slate-400 text-xl" />
+          <input 
+            type="text" 
+            placeholder="Search by name or phone..." 
+            className="w-full pl-12 pr-4 py-4 glass-card border-none focus:ring-2 focus:ring-indigo-500 transition-all text-sm font-medium"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[400px_auto] gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-[420px_auto] gap-10 items-start">
         {/* FORM SECTION */}
-        <div className="glass-card p-8 sticky top-8">
-          <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-            {enquiryId ? 'Update Lead' : 'New Enquiry'}
+        <div className="glass-card p-10 border-t-[10px] border-indigo-600 sticky top-10">
+          <h2 className="text-2xl font-black mb-8 text-slate-800">
+            {enquiryId ? 'Update Lead' : 'Register New Lead'}
           </h2>
-          <form className="space-y-5" onSubmit={saveEnquiry}>
-            <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 ml-1">Full Name</label>
+
+          <form className="space-y-6" onSubmit={saveEnquiry}>
+            <div className="relative">
+              <label className="block text-xs font-black text-slate-400 uppercase tracking-tighter mb-2 ml-1">Full Name</label>
               <div className="relative">
-                <HiUser className="absolute left-3 top-4 text-slate-400" />
-                <input className="input-style pl-10" value={formData.name} onChange={(e)=>setFormData({...formData, name:e.target.value})} required placeholder="John Doe" />
+                <HiUser className="input-icon" />
+                <input className="modern-input" value={formData.name} onChange={e=>setFormData({...formData, name:e.target.value})} required placeholder="John Doe" />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 ml-1">Email Address</label>
+            <div className="relative">
+              <label className="block text-xs font-black text-slate-400 uppercase tracking-tighter mb-2 ml-1">Email Address</label>
               <div className="relative">
-                <HiMail className="absolute left-3 top-4 text-slate-400" />
-                <input type="email" className="input-style pl-10" value={formData.email} onChange={(e)=>setFormData({...formData, email:e.target.value})} required placeholder="john@example.com" />
+                <HiMail className="input-icon" />
+                <input type="email" className="modern-input" value={formData.email} onChange={e=>setFormData({...formData, email:e.target.value})} required placeholder="john@example.com" />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 ml-1">Phone Number</label>
+            <div className="relative">
+              <label className="block text-xs font-black text-slate-400 uppercase tracking-tighter mb-2 ml-1">Phone Number</label>
               <div className="relative">
-                <HiPhone className="absolute left-3 top-4 text-slate-400" />
-                <input className="input-style pl-10" value={formData.phone} onChange={(e)=>setFormData({...formData, phone:e.target.value})} required placeholder="+91..." />
+                <HiPhone className="input-icon" />
+                <input className="modern-input" value={formData.phone} onChange={e=>setFormData({...formData, phone:e.target.value})} required placeholder="+91 00000 00000" />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-sm font-semibold text-slate-600 ml-1">Message</label>
+            <div className="relative">
+              <label className="block text-xs font-black text-slate-400 uppercase tracking-tighter mb-2 ml-1">Requirements</label>
               <div className="relative">
-                <HiChatAlt2 className="absolute left-3 top-3 text-slate-400" />
-                <textarea className="input-style pl-10 h-32" value={formData.message} onChange={(e)=>setFormData({...formData, message:e.target.value})} required placeholder="How can we help?" />
+                <HiChatAlt2 className="absolute left-4 top-5 text-slate-400 text-xl" />
+                <textarea className="modern-input pl-12 h-32 resize-none" value={formData.message} onChange={e=>setFormData({...formData, message:e.target.value})} required placeholder="How can we help?" />
               </div>
             </div>
             
-            <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-100 transition-all active:scale-95">
-              {enquiryId ? 'Update Enquiry' : 'Register Lead'}
+            <button type="submit" className="w-full bg-slate-900 hover:bg-indigo-600 text-white font-black py-5 rounded-[1.5rem] shadow-2xl transition-all active:scale-95 uppercase tracking-widest">
+              {enquiryId ? 'Update Information' : 'Save Enquiry'}
             </button>
           </form>
         </div>
 
         {/* LIST SECTION */}
-        <div className="glass-card p-2 overflow-hidden">
-          <EnquiryList data={enquiryList} getAllEnquiry={getAllEnquiry} editRow={(item) => { setFormData(item); setEnquiryId(item._id); window.scrollTo(0,0); }} /> 
+        <div className="glass-card p-2 min-h-[600px]">
+          <EnquiryList 
+            data={filteredData} 
+            getAllEnquiry={getAllEnquiry} 
+            editRow={(item) => { setFormData(item); setEnquiryId(item._id); window.scrollTo(0,0); }} 
+          /> 
         </div>
       </div>
     </div>

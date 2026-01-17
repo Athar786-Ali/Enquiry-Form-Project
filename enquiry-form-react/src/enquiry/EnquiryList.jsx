@@ -1,87 +1,91 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { HiTrash, HiPencilAlt, HiUserCircle } from "react-icons/hi";
 
-// 🔥 Backend API Base URL (Vercel)
 const API_BASE = "https://backend-enquiry-form-project.vercel.app/api/enquiry";
 
 export default function EnquiryList({ data, getAllEnquiry, editRow }) {
 
   const deleteEnquiry = (id) => {
-    if (window.confirm("Are you sure you want to delete?")) {
-
+    if (window.confirm("Kya aap sach mein ise delete karna chahte hain?")) {
       axios.delete(`${API_BASE}/delete/${id}`)
         .then((res) => {
           if (res.data.status === 1) {
-            toast.success(res.data.msg);
+            toast.success("Enquiry deleted!");
             getAllEnquiry();
           }
         })
-        .catch(() => {
-          toast.error("Error deleting data");
-        });
+        .catch(() => toast.error("Delete karne mein error aaya"));
     }
   };
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-sm">
-      <h2 className="text-xl font-bold mb-6">Enquiry List</h2>
+    <div className="p-4">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-slate-800">Recent Enquiries</h2>
+        <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold">
+          Total: {data.length}
+        </span>
+      </div>
 
-      <div className="overflow-x-auto relative shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th className="px-6 py-3">SR NO</th>
-              <th className="px-6 py-3">NAME</th>
-              <th className="px-6 py-3">EMAIL</th>
-              <th className="px-6 py-3">PHONE</th>
-              <th className="px-6 py-3">MESSAGE</th>
-              <th className="px-6 py-3">DELETE</th>
-              <th className="px-6 py-3">EDIT</th>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-separate border-spacing-y-3">
+          <thead>
+            <tr className="text-slate-500 text-sm uppercase tracking-wider">
+              <th className="px-4 py-2">Customer</th>
+              <th className="px-4 py-2">Contact</th>
+              <th className="px-4 py-2">Message</th>
+              <th className="px-4 py-2 text-center">Actions</th>
             </tr>
           </thead>
-
           <tbody>
             {data.length > 0 ? (
-              data.map((item, index) => (
-                <tr key={item._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                  
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {index + 1}
+              data.map((item) => (
+                <tr key={item._id} className="bg-white/50 hover:bg-white transition-all shadow-sm group">
+                  <td className="px-4 py-4 rounded-l-2xl">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 font-bold">
+                        {item.name.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="font-bold text-slate-700">{item.name}</span>
+                    </div>
                   </td>
-
-                  <td className="px-6 py-4">{item.name}</td>
-                  <td className="px-6 py-4">{item.email}</td>
-                  <td className="px-6 py-4">{item.phone}</td>
-                  <td className="px-6 py-4">{item.message}</td>
-
-                  <td className="px-6 py-4">
-                    <button 
-                      onClick={() => deleteEnquiry(item._id)}
-                      className="font-medium text-red-600 dark:text-red-500 hover:underline">
-                        Delete
-                    </button>
+                  <td className="px-4 py-4">
+                    <div className="text-sm text-slate-600 font-medium">{item.email}</div>
+                    <div className="text-xs text-slate-400">{item.phone}</div>
                   </td>
-
-                  <td className="px-6 py-4">
-                    <button 
-                      onClick={() => editRow(item)}
-                      className="font-medium text-cyan-600 dark:text-cyan-500 hover:underline">
-                        Edit
-                    </button>
+                  <td className="px-4 py-4 max-w-xs">
+                    <p className="text-sm text-slate-500 truncate">{item.message}</p>
                   </td>
-
+                  <td className="px-4 py-4 rounded-r-2xl text-center">
+                    <div className="flex justify-center gap-2">
+                      <button 
+                        onClick={() => editRow(item)}
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                        title="Edit"
+                      >
+                        <HiPencilAlt className="text-xl" />
+                      </button>
+                      <button 
+                        onClick={() => deleteEnquiry(item._id)}
+                        className="p-2 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all"
+                        title="Delete"
+                      >
+                        <HiTrash className="text-xl" />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="text-center py-4">
-                  No Data Found
+                <td colSpan="4" className="text-center py-20 text-slate-400 font-medium">
+                  Abhi tak koi data nahi mila. 
                 </td>
               </tr>
             )}
           </tbody>
-
         </table>
       </div>
     </div>

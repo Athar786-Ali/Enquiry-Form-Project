@@ -2,21 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   body {
-    @apply antialiased text-slate-900;
-    background: radial-gradient(at 0% 0%, hsla(225,39%,30%,0.02) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,20%,0.05) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(225,39%,30%,0.02) 0, transparent 50%);
-    background-color: #fcfdfe;
-    min-height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh !important;
+    /* Luxury Gradient */
+    background: radial-gradient(at 0% 0%, #0f172a 0, transparent 50%), 
+                radial-gradient(at 50% 0%, #1e1b4b 0, transparent 50%), 
+                #f8fafc !important; 
+    background-attachment: fixed !important;
   }
 }
 
 .glass-card {
-  @apply bg-white/70 backdrop-blur-xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2rem];
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 2rem !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05) !important;
 }
 
-.input-style {
-  @apply w-full px-4 py-3 bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none;
+.modern-input {
+  width: 100% !important;
+  padding: 1rem 1rem 1rem 3rem !important; /* pl-12 for icon */
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 1rem !important;
+  outline: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.modern-input:focus {
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1) !important;
+}
+
+.input-icon {
+  position: absolute !important;
+  left: 1rem !important;
+  top: 3.2rem !important; /* Adjust based on label height */
+  color: #94a3b8 !important;
+  font-size: 1.25rem !important;
+  z-index: 10 !important;
 }
