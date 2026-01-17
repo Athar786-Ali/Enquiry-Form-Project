@@ -1,30 +1,29 @@
 import React from "react";
-import axios from "axios";
+import API from "../api";
 import { toast } from "react-toastify";
 import { HiTrash, HiPencilAlt } from "react-icons/hi";
 
-const API_BASE =
-"https://backend-enquiry-form-project-server.onrender.com/api/enquiry";
-
-
-
 export default function EnquiryList({ data, getAllEnquiry, editRow }) {
 
-  const deleteEnquiry = (id) => {
-    if (window.confirm("Kya aap sach mein ise delete karna chahte hain?")) {
-      axios.delete(`${API_BASE}/delete/${id}`)
-        .then((res) => {
-          if (res.data.status === 1) {
-            toast.success("Enquiry deleted!");
-            getAllEnquiry();
-          }
-        })
-        .catch(() => toast.error("Delete karne mein error aaya"));
+  // 🔹 DELETE ENQUIRY
+  const deleteEnquiry = async (id) => {
+    if (!window.confirm("Kya aap sach mein ise delete karna chahte hain?")) return;
+
+    try {
+      const res = await API.delete(`/enquiry/delete/${id}`);
+      if (res.data.status === 1) {
+        toast.success("Enquiry deleted!");
+        getAllEnquiry();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Delete karne mein error aaya");
     }
   };
 
   return (
     <div className="p-4">
+      {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-slate-800">Recent Enquiries</h2>
         <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold">
@@ -32,6 +31,7 @@ export default function EnquiryList({ data, getAllEnquiry, editRow }) {
         </span>
       </div>
 
+      {/* TABLE */}
       <div className="overflow-x-auto">
         <table className="w-full text-left border-separate border-spacing-y-3">
           <thead>
@@ -42,35 +42,55 @@ export default function EnquiryList({ data, getAllEnquiry, editRow }) {
               <th className="px-4 py-2 text-center">Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {data.length > 0 ? (
               data.map((item) => (
-                <tr key={item._id} className="bg-white hover:bg-slate-50 transition-all shadow-sm group">
+                <tr
+                  key={item._id}
+                  className="bg-white hover:bg-slate-50 transition-all shadow-sm group"
+                >
+                  {/* NAME */}
                   <td className="px-4 py-4 rounded-l-2xl">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 font-bold">
                         {item.name.charAt(0).toUpperCase()}
                       </div>
-                      <span className="font-bold text-slate-700">{item.name}</span>
+                      <span className="font-bold text-slate-700">
+                        {item.name}
+                      </span>
                     </div>
                   </td>
+
+                  {/* CONTACT */}
                   <td className="px-4 py-4">
-                    <div className="text-sm text-slate-600 font-medium">{item.email}</div>
-                    <div className="text-xs text-slate-400">{item.phone}</div>
+                    <div className="text-sm text-slate-600 font-medium">
+                      {item.email}
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      {item.phone}
+                    </div>
                   </td>
+
+                  {/* MESSAGE */}
                   <td className="px-4 py-4 max-w-xs">
-                    <p className="text-sm text-slate-500 truncate">{item.message}</p>
+                    <p className="text-sm text-slate-500 truncate">
+                      {item.message}
+                    </p>
                   </td>
+
+                  {/* ACTIONS */}
                   <td className="px-4 py-4 rounded-r-2xl text-center">
                     <div className="flex justify-center gap-2">
-                      <button 
+                      <button
                         onClick={() => editRow(item)}
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                         title="Edit"
                       >
                         <HiPencilAlt className="text-xl" />
                       </button>
-                      <button 
+
+                      <button
                         onClick={() => deleteEnquiry(item._id)}
                         className="p-2 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all"
                         title="Delete"
@@ -83,8 +103,11 @@ export default function EnquiryList({ data, getAllEnquiry, editRow }) {
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="text-center py-20 text-slate-400 font-medium">
-                  Abhi tak koi data nahi mila. 
+                <td
+                  colSpan="4"
+                  className="text-center py-20 text-slate-400 font-medium"
+                >
+                  Abhi tak koi data nahi mila.
                 </td>
               </tr>
             )}

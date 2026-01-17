@@ -1,17 +1,17 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://backend-enquiry-form-project-server.onrender.com/api",
-
+  baseURL:
+    import.meta.env.MODE === "development"
+      ? "http://localhost:8000/api"
+      : "https://backend-enquiry-form-project-server.onrender.com/api",
 });
 
 // 🔐 AUTO ATTACH JWT TOKEN
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    if (token) {
-      config.headers["auth-token"] = token;
-    }
+    if (token) config.headers["auth-token"] = token;
     return config;
   },
   (error) => Promise.reject(error)
