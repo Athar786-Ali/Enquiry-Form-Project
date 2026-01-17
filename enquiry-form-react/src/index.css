@@ -2,48 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   body {
-    margin: 0 !important;
-    padding: 0 !important;
-    min-height: 100vh !important;
-    /* Luxury Gradient */
-    background: radial-gradient(at 0% 0%, #0f172a 0, transparent 50%), 
-                radial-gradient(at 50% 0%, #1e1b4b 0, transparent 50%), 
-                #f8fafc !important; 
-    background-attachment: fixed !important;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #f8fafc;
   }
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  border-radius: 2rem !important;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05) !important;
-}
+@layer components {
+  .glass-card {
+    @apply bg-white rounded-2xl shadow-xl p-6;
+  }
 
-.modern-input {
-  width: 100% !important;
-  padding: 1rem 1rem 1rem 3rem !important; /* pl-12 for icon */
-  background: rgba(255, 255, 255, 0.9) !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 1rem !important;
-  outline: none !important;
-  transition: all 0.3s ease !important;
-}
+  .input-style {
+    @apply w-full px-4 py-3 border rounded-xl
+           focus:outline-none focus:ring-2
+           focus:ring-indigo-500;
+  }
 
-.modern-input:focus {
-  border-color: #4f46e5 !important;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1) !important;
-}
-
-.input-icon {
-  position: absolute !important;
-  left: 1rem !important;
-  top: 3.2rem !important; /* Adjust based on label height */
-  color: #94a3b8 !important;
-  font-size: 1.25rem !important;
-  z-index: 10 !important;
+  .btn-primary {
+    @apply bg-indigo-600 hover:bg-indigo-700
+           text-white font-bold py-3
+           rounded-xl transition-all;
+  }
 }
