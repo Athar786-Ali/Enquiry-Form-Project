@@ -3,7 +3,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { HiTrash, HiPencilAlt } from "react-icons/hi";
 
-const API_BASE = "https://backend-enquiry-form-project.vercel.app/api/enquiry";
+const API_BASE =
+"https://backend-enquiry-form-project-server.onrender.com/api/enquiry";
+
 
 export default function EnquiryList({ data, getAllEnquiry, editRow }) {
 

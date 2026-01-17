@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://backend-enquiry-form-project.vercel.app/api",
+  baseURL: "https://backend-enquiry-form-project-server.onrender.com/api",
+
 });
 
 // 🔐 AUTO ATTACH JWT TOKEN
