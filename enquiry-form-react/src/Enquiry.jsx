@@ -8,6 +8,7 @@ const API_BASE =
 "https://backend-enquiry-form-project-server.onrender.com/api/enquiry";
 
 
+
 export default function Enquiry() {
   const [enquiryList, setEnquiryList] = useState([]); 
   const [searchTerm, setSearchTerm] = useState("");

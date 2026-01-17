@@ -7,6 +7,7 @@ const API_BASE =
 "https://backend-enquiry-form-project-server.onrender.com/api/enquiry";
 
 
+
 export default function EnquiryList({ data, getAllEnquiry, editRow }) {
 
   const deleteEnquiry = (id) => {

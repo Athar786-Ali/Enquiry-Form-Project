@@ -19,7 +19,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://fronted-enquiry-form-project.vercel.app" // ✅ correct
+    "https://fronted-enquiry-form-project.vercel.app"
   ],
   credentials: true
 }));
