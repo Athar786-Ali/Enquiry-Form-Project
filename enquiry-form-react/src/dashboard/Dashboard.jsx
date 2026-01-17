@@ -12,7 +12,7 @@ export default function Dashboard() {
       <nav className="flex justify-between items-center mb-12 glass-card p-4 px-8">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">G</div>
-          <h1 className="text-2xl font-black text-slate-800 tracking-tight">GOLDEN <span className="text-indigo-600">REF.</span></h1>
+          <h1 className="text-2xl font-black text-slate-800 tracking-tight"> Athar   <span className="text-indigo-600">Ali</span></h1>
         </div>
         <button onClick={logout} className="flex items-center gap-2 text-slate-600 hover:text-red-600 font-medium transition-colors">
           <HiLogout className="text-xl" /> Logout
