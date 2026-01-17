@@ -45,21 +45,21 @@ export default function TaskManager() {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-5xl mx-auto">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto bg-slate-50 min-h-screen">
       {/* Task Stats Card */}
       <div className="flex gap-4 mb-8">
-         <div className="glass-card flex-1 p-6 text-center border-b-4 border-indigo-500">
+         <div className="bg-white rounded-2xl shadow-xl flex-1 p-6 text-center border-b-4 border-indigo-500">
             <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">Pending Tasks</p>
             <h3 className="text-3xl font-black text-slate-800">{list.filter(t => t.status !== 'completed').length}</h3>
          </div>
-         <div className="glass-card flex-1 p-6 text-center border-b-4 border-green-500">
+         <div className="bg-white rounded-2xl shadow-xl flex-1 p-6 text-center border-b-4 border-green-500">
             <p className="text-slate-500 text-xs font-bold uppercase tracking-wider">Completed Tasks</p>
             <h3 className="text-3xl font-black text-slate-800">{list.filter(t => t.status === 'completed').length}</h3>
          </div>
       </div>
 
       {/* Form Section */}
-      <div className="glass-card p-8 mb-10 border-t-4 border-indigo-500">
+      <div className="bg-white rounded-2xl shadow-xl p-8 mb-10 border-t-4 border-indigo-500">
         <h2 className="text-2xl font-black mb-8 text-slate-800 flex items-center gap-2">
           <HiCollection className="text-indigo-600"/> Create New Task
         </h2>
@@ -69,7 +69,7 @@ export default function TaskManager() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-bold text-slate-700">Task Title</label>
               <input 
-                className="input-style" 
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" 
                 placeholder="Enter task title..." 
                 value={task.title} 
                 onChange={e=>setTask({...task, title:e.target.value})} 
@@ -79,7 +79,7 @@ export default function TaskManager() {
               <label className="text-sm font-bold text-slate-700">Due Date</label>
               <input 
                 type="date" 
-                className="input-style" 
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" 
                 value={task.dueDate} 
                 onChange={e=>setTask({...task, dueDate:e.target.value})} 
               />
@@ -89,7 +89,7 @@ export default function TaskManager() {
           <div className="flex flex-col gap-2">
             <label className="text-sm font-bold text-slate-700">Description</label>
             <textarea 
-              className="input-style h-24 resize-none" 
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 h-24 resize-none" 
               placeholder="Add task details here..." 
               value={task.description} 
               onChange={e=>setTask({...task, description:e.target.value})} 
@@ -100,7 +100,7 @@ export default function TaskManager() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-bold text-slate-700">Priority Level</label>
               <select 
-                className="input-style" 
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" 
                 value={task.priority} 
                 onChange={e=>setTask({...task, priority:e.target.value})}
               >
@@ -111,7 +111,7 @@ export default function TaskManager() {
             </div>
             <button 
               type="submit" 
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-100 flex items-center justify-center gap-2 transition-all active:scale-95"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
             >
               <HiPlus className="text-xl"/> Add Task
             </button>
@@ -122,12 +122,15 @@ export default function TaskManager() {
       {/* Task List Section */}
       <div className="space-y-4">
         {list.length === 0 ? (
-          <div className="glass-card p-10 text-center">
+          <div className="bg-white rounded-2xl shadow-xl p-10 text-center">
             <p className="text-slate-400 font-medium italic">No tasks found. Start by adding one above!</p>
           </div>
         ) : (
           list.map(t => (
-            <div key={t._id} className={`glass-card p-5 flex items-center justify-between transition-all hover:border-indigo-200 ${t.status === 'completed' ? 'bg-slate-50/80 grayscale' : ''}`}>
+            <div 
+              key={t._id} 
+              className={`bg-white rounded-2xl shadow-xl p-5 flex items-center justify-between transition-all hover:shadow-2xl ${t.status === 'completed' ? 'bg-slate-50 opacity-60' : ''}`}
+            >
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => toggleTask(t)} 

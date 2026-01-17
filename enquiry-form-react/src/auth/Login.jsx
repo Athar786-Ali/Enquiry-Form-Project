@@ -20,10 +20,10 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center p-4">
-      <div className="glass-card w-full max-w-md p-10">
+    <div className="h-screen flex items-center justify-center p-4 bg-slate-50">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-10">
         <div className="text-center mb-10">
-          <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 shadow-lg shadow-indigo-200">G</div>
+          <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 shadow-lg">G</div>
           <h2 className="text-3xl font-black text-slate-800">Welcome Back</h2>
           <p className="text-slate-500 mt-2">Sign in to manage your refrigeration business</p>
         </div>
@@ -31,13 +31,28 @@ export default function Login() {
         <div className="space-y-5">
           <div className="relative">
             <HiMail className="absolute left-3 top-3.5 text-slate-400 text-xl" />
-            <input type="email" placeholder="Email Address" className="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all" onChange={(e) => setForm({ ...form, email: e.target.value })} />
+            <input 
+              type="email" 
+              placeholder="Email Address" 
+              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" 
+              onChange={(e) => setForm({ ...form, email: e.target.value })} 
+            />
           </div>
           <div className="relative">
             <HiLockClosed className="absolute left-3 top-3.5 text-slate-400 text-xl" />
-            <input type="password" placeholder="Password" className="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 transition-all" onChange={(e) => setForm({ ...form, password: e.target.value })} />
+            <input 
+              type="password" 
+              placeholder="Password" 
+              className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" 
+              onChange={(e) => setForm({ ...form, password: e.target.value })} 
+            />
           </div>
-          <button onClick={loginUser} className="btn-primary w-full py-3.5 text-lg">Sign In</button>
+          <button 
+            onClick={loginUser} 
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all text-lg"
+          >
+            Sign In
+          </button>
         </div>
 
         <p className="mt-8 text-center text-slate-600">

@@ -7,21 +7,29 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen p-8 max-w-7xl mx-auto">
+    <div className="min-h-screen p-8 max-w-7xl mx-auto bg-slate-50">
       {/* Navbar */}
-      <nav className="flex justify-between items-center mb-12 glass-card p-4 px-8">
+      <nav className="flex justify-between items-center mb-12 bg-white rounded-2xl shadow-xl p-4 px-8">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">G</div>
-          <h1 className="text-2xl font-black text-slate-800 tracking-tight"> Athar   <span className="text-indigo-600">Ali</span></h1>
+          <h1 className="text-2xl font-black text-slate-800 tracking-tight">
+            Athar <span className="text-indigo-600">Ali</span>
+          </h1>
         </div>
-        <button onClick={logout} className="flex items-center gap-2 text-slate-600 hover:text-red-600 font-medium transition-colors">
+        <button 
+          onClick={logout} 
+          className="flex items-center gap-2 text-slate-600 hover:text-red-600 font-medium transition-colors"
+        >
           <HiLogout className="text-xl" /> Logout
         </button>
       </nav>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Card 1 */}
-        <a href="/enquiries" className="glass-card p-8 group hover:border-indigo-500 transition-all duration-300">
+        {/* Card 1 - Enquiry Leads */}
+        <a 
+          href="/enquiries" 
+          className="bg-white rounded-2xl shadow-xl p-8 group hover:shadow-2xl transition-all duration-300 border border-slate-100"
+        >
           <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 transition-colors">
             <HiUserGroup className="text-3xl text-indigo-600 group-hover:text-white" />
           </div>
@@ -30,8 +38,11 @@ export default function Dashboard() {
           <div className="mt-6 inline-flex items-center text-indigo-600 font-semibold">Open Manager →</div>
         </a>
 
-        {/* Card 2 */}
-        <a href="/tasks" className="glass-card p-8 group hover:border-emerald-500 transition-all duration-300">
+        {/* Card 2 - Task Manager */}
+        <a 
+          href="/tasks" 
+          className="bg-white rounded-2xl shadow-xl p-8 group hover:shadow-2xl transition-all duration-300 border border-slate-100"
+        >
           <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors">
             <HiClipboardList className="text-3xl text-emerald-600 group-hover:text-white" />
           </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { HiTrash, HiPencilAlt, HiUserCircle } from "react-icons/hi";
+import { HiTrash, HiPencilAlt } from "react-icons/hi";
 
 const API_BASE = "https://backend-enquiry-form-project.vercel.app/api/enquiry";
 
@@ -42,7 +42,7 @@ export default function EnquiryList({ data, getAllEnquiry, editRow }) {
           <tbody>
             {data.length > 0 ? (
               data.map((item) => (
-                <tr key={item._id} className="bg-white/50 hover:bg-white transition-all shadow-sm group">
+                <tr key={item._id} className="bg-white hover:bg-slate-50 transition-all shadow-sm group">
                   <td className="px-4 py-4 rounded-l-2xl">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600 font-bold">
