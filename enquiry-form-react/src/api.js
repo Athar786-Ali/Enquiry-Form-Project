@@ -22,10 +22,9 @@ API.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/";
-    }
-    return Promise.reject(error);
+   console.warn("Unauthorized – token may be expired");
+  }
+  return Promise.reject(error);
   }
 );
 

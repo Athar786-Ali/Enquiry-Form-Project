@@ -12,7 +12,10 @@ export default function Login() {
       if (res.data.status === 1) {
         localStorage.setItem("token", res.data.token);
         toast.success("Welcome Back!");
-        window.location.href = "/dashboard";
+        setTimeout(() => {
+         window.location.assign("/dashboard");
+         }, 300);
+
       } else {
         toast.error(res.data.msg);
       }
