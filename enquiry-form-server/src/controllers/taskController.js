@@ -1,15 +1,15 @@
 const Task = require("../models/taskModel");
 
 exports.addTask = async (req, res) => {
-  const { title, description, priority, dueDate } = req.body;
+ const { title, description, priority, dueDate } = req.body;
 
-  const task = new Task({
-    userId: req.user.id,
-    title,
-    description,
-    priority,
-    dueDate   // ✅ IMPORTANT
-  });
+const task = new Task({
+  userId: req.user.id,
+  title,
+  description,
+  priority,
+  dueDate: dueDate || null
+});
 
   await task.save();
   res.json({ status: 1, msg: "Task added", task });
