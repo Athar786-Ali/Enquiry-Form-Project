@@ -23,9 +23,8 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center p-4 ">
-
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-10">
+    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6">
+     <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 sm:p-10">
         <div className="text-center mb-10">
           <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold mx-auto mb-4 shadow-lg">G</div>
           <h2 className="text-3xl font-black text-slate-800">Welcome Back</h2>

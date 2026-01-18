@@ -68,7 +68,8 @@ export default function Enquiry() {
   );
 
   return (
-    <div className="p-4 md:p-10 max-w-[1600px] mx-auto min-h-screen">
+   <div className="p-3 sm:p-4 md:p-10 max-w-[1600px] mx-auto">
+
       {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="flex items-center gap-5">
