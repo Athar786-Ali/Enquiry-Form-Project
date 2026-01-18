@@ -83,21 +83,22 @@ export default function TaskManager() {
     <div className="p-4 md:p-8 max-w-5xl mx-auto min-h-screen">
 
       {/* 📊 STATS */}
-      <div className="flex gap-4 mb-8">
-        <div className="bg-white rounded-2xl shadow-xl flex-1 p-6 text-center border-b-4 border-indigo-500">
-          <p className="text-xs font-bold uppercase text-slate-500">Pending</p>
-          <h3 className="text-3xl font-black">
-            {list.filter(t => t.status !== "completed").length}
-          </h3>
-        </div>
+     <div className="flex gap-4 mb-8">
+  <div className="bg-white rounded-2xl shadow-xl flex-1 p-6 text-center border-b-4 border-indigo-500">
+    <p className="text-xs font-bold uppercase text-slate-500">Pending</p>
+    <h3 className="text-3xl font-black">
+      {list.filter(t => t.status !== "completed").length}
+    </h3>
+  </div>
 
-        <div className="bg-white rounded-2xl shadow-xl flex-1 p-6 text-center border-b-4 border-green-500">
-          <p className="text-xs font-bold uppercase text-slate-500">Completed</p>
-          <h3 className="text-3xl font-black">
-            {list.filter(t => t.status === "completed").length}
-          </h3>
-        </div>
-      </div>
+  <div className="bg-white rounded-2xl shadow-xl flex-1 p-6 text-center border-b-4 border-green-500">
+    <p className="text-xs font-bold uppercase text-slate-500">Completed</p>
+    <h3 className="text-3xl font-black">
+      {list.filter(t => t.status === "completed").length}
+    </h3>
+  </div>
+</div>
+
 
       {/* 📝 FORM */}
       <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-10 border-t-4 border-indigo-500">
@@ -115,11 +116,13 @@ export default function TaskManager() {
           />
 
           <input
-            type="date"
-            className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500"
-            value={task.dueDate}
-            onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
+          type="date"
+           value={task.dueDate}
+           onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
+            className="w-full px-4 py-3 border border-slate-200 rounded-xl
+             focus:ring-2 focus:ring-indigo-500"
           />
+
 
           <textarea
             className="w-full px-4 py-3 border border-slate-200 rounded-xl resize-none min-h-[100px]"
